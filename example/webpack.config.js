@@ -11,8 +11,14 @@ module.exports = {
         use: {
           loader: 'rust-wasm-loader',
           options: {
-            path: 'build/',
+            path: '',
           }
+        }
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: "file-loader?name=[name].[ext]"
         }
       }
     ]

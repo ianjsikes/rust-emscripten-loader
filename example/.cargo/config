@@ -1,0 +1,4 @@
+[target.wasm32-unknown-emscripten]
+rustflags = [
+    "-Clink-args=-s EXTRA_EXPORTED_RUNTIME_METHODS=['cwrap']" ,
+]

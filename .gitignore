@@ -11,3 +11,8 @@ node_modules
 
 example/build
 example/target
+
+.vscode/
+
+Cargo.lock
+package-lock.json

@@ -1,4 +1,5 @@
 const wasm = require('./main.rs')
+const index = require('./index.html')
 
 wasm.initialize().then(module => {
   const doub = module.cwrap('doub', 'number', ['number'])

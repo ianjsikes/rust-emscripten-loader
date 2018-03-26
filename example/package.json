@@ -6,11 +6,12 @@
   "license": "UNLICENSED",
   "scripts": {
     "compile": "webpack --progress",
-    "serve": "http-server"
+    "serve": "http-server ./build"
   },
   "dependencies": {
-    "rust-wasm-loader": "../",
+    "file-loader": "^1.1.11",
     "http-server": "^0.9.0",
+    "rust-wasm-loader": "../",
     "webpack": "^2.2.1"
   }
 }

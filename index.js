@@ -3,8 +3,9 @@ const fs = require('fs')
 const loaderUtils = require('loader-utils')
 const path = require('path')
 const toml = require('toml')
+const babel = require('babel-core');
 
-module.exports = function(source) {
+module.exports = function (source) {
   // Indicate that this loader is asynchronous
   const callback = this.async()
   const srcDir = path.dirname(path.dirname(this.resourcePath))
@@ -14,7 +15,13 @@ module.exports = function(source) {
   ).package.name
 
   const opts = loaderUtils.getOptions(this)
-  const release = opts ? opts.release : false
+
+  const rustTarget = (opts || {}).rustTarget || `wasm32-unknown-emscripten`;
+
+  const builtin = /unknown-unknown/.test(rustTarget);
+
+  // debug builds are presently broken in straight rust wasm
+  const release = builtin || (opts ? opts.release : false)
 
   const buildPath = opts ? opts.path : undefined
   if (buildPath === undefined) {
@@ -26,18 +33,18 @@ module.exports = function(source) {
     )
   }
 
-  const rustTarget = `wasm32-unknown-emscripten`
-
   const outDir = path.join(
     srcDir,
     'target',
     rustTarget,
     release ? 'release' : 'debug'
   )
+
   const outFile = path.join(outDir, `${packageName}.js`)
-  const cmd = `cargo build --target=${rustTarget}${release ? ' --release' : ''}`
+  const subcmd = `cargo ${builtin ? 'web' : ''} build`;
+  const cmd = `${subcmd} --target=${rustTarget}${release ? ' --release' : ''} --verbose`
   const self = this
-  child_process.exec(cmd, { cwd: this.context }, function(
+  child_process.exec(cmd, { cwd: this.context }, function (
     error,
     stdout,
     stderr
@@ -63,6 +70,13 @@ module.exports = function(source) {
       fs.readFileSync(path.join(outDir, 'deps', wasmFile))
     )
 
+    if (builtin) {
+      const es5out = babel.transform(out, {
+        'presets': ['env']
+      });
+      return callback(null, es5out.code);
+    }
+
     // This object is passed to the Emscripten 'glue' code
     const Module = {
       // Path in the built project to the wasm file
@@ -70,6 +84,7 @@ module.exports = function(source) {
       // Indicates that we are NOT running in node, despite 'require' being defined
       ENVIRONMENT: 'WEB',
     }
+
     const glue = `module.exports = (function(existingModule){
       return {
         // Returns a promise that resolves when the wasm runtime is initialized and ready for use

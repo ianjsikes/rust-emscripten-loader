@@ -4,6 +4,7 @@
   "author": "Ian J Sikes",
   "description": "Webpack loader for Rust compiled to WebAssembly using Emscripten",
   "dependencies": {
+    "babel-core": "^6.26.3",
     "loader-utils": "^1.0.3",
     "toml": "^2.3.2"
   },

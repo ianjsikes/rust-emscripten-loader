@@ -5,7 +5,7 @@ const path = require('path')
 const toml = require('toml')
 const babel = require('babel-core');
 
-module.exports = function (source) {
+module.exports = function(source) {
   // Indicate that this loader is asynchronous
   const callback = this.async()
   const srcDir = path.dirname(path.dirname(this.resourcePath))
@@ -44,7 +44,7 @@ module.exports = function (source) {
   const subcmd = `cargo ${builtin ? 'web' : ''} build`;
   const cmd = `${subcmd} --target=${rustTarget}${release ? ' --release' : ''} --verbose`
   const self = this
-  child_process.exec(cmd, { cwd: this.context }, function (
+  child_process.exec(cmd, { cwd: this.context }, function(
     error,
     stdout,
     stderr
@@ -71,10 +71,15 @@ module.exports = function (source) {
     )
 
     if (builtin) {
+
+      // `cargo web build` emits es6 which
+      // causes problems with `webpack -p`
       const es5out = babel.transform(out, {
         'presets': ['env']
       });
+
       return callback(null, es5out.code);
+
     }
 
     // This object is passed to the Emscripten 'glue' code

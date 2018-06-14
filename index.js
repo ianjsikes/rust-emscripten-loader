@@ -53,13 +53,14 @@ module.exports = function(source) {
     const wasmFile = fs
       .readdirSync(path.join(outDir, 'deps'))
       .find(f => /\.wasm$/.test(f))
+
     if (!wasmFile) {
       return callback(new Error('No wasm file found', null))
     }
 
     // Emit the wasm file
     self.emitFile(
-      `${packageName}.wasm`,
+      wasmFile,
       fs.readFileSync(path.join(outDir, 'deps', wasmFile))
     )
 

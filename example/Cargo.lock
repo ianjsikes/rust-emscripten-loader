@@ -1,23 +1,4 @@
-[root]
+[[package]]
 name = "rust-wasm-loader-example"
 version = "0.1.0"
-dependencies = [
- "webplatform 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
-[[package]]
-name = "libc"
-version = "0.2.24"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "webplatform"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "libc 0.2.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[metadata]
-"checksum libc 0.2.24 (registry+https://github.com/rust-lang/crates.io-index)" = "38f5c2b18a287cf78b4097db62e20f43cace381dc76ae5c0a3073067f78b7ddc"
-"checksum webplatform 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "dceedd9c1de7153116da0e61a21365a2b74f603693bc565fad16c05aa79046b7"

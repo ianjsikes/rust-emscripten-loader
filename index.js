@@ -63,10 +63,12 @@ module.exports = function(source) {
     } else {
       wasmFile = fs
         .readdirSync(path.join(outDir, 'deps'))
-        .find(f => /\.wasm$/.test(f))
-      if (!wasmFile) {
-        return callback(new Error('No wasm file found', null))
-      }
+        .find(f => /\.wasm$/.test(f));
+      wasmFile = path.join(outDir, 'deps', wasmFile)
+    }
+
+    if (!wasmFile) {
+      return callback(new Error('No wasm file found', null))
     }
 
     // Emit the wasm file

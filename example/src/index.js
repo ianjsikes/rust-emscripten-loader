@@ -1,7 +1,7 @@
-const wasm = require('./main.rs')
+const wasm = require('./lib.rs');
 
-wasm.initialize().then(module => {
-  const doub = module.cwrap('doub', 'number', ['number'])
-  console.log('Calling rust functions!')
-  console.log(doub(21))
+wasm.then(module => {
+  console.log('Calling rust functions!');
+  module.hello();
+  console.log(module.doub(21));
 })

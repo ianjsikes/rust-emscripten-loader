@@ -5,7 +5,8 @@
   "description": "Webpack loader for Rust compiled to WebAssembly using Emscripten",
   "dependencies": {
     "babel-core": "^6.26.3",
-    "loader-utils": "^1.0.3",
+    "babel-preset-env": "^1.7.0",
+    "loader-utils": "^1.1.0",
     "toml": "^2.3.2"
   },
   "repository": {

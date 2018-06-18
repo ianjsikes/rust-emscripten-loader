@@ -57,6 +57,7 @@ async function loadwasm() {
   // Use your module here
   console.log(lib.doub(21));
 }
+loadwasm();
 ```
 
 ### Configuration

@@ -4,7 +4,7 @@
 
 ## Usage
 
-This is a simple Webpack loader that shells out to cargo to build a Rust project targeting WebAssembly. See [this post](https://users.rust-lang.org/t/compiling-to-the-web-with-rust-and-emscripten/7627) for
+This is a simple Webpack loader that shells out to cargo to build a Rust project targeting WebAssembly. See [this post](https://www.hellorust.com/setup/wasm-target/) for
 more details on using Rust to target the web.
 
 To use it, first install the package:

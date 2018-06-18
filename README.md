@@ -38,7 +38,7 @@ module.exports = {
 
 Note: if you are using `file-loader`, make sure to add `.wasm` to the test field, otherwise the module will not be copied! (e.g. `test: /\.(wasm|jpg|jpeg|png|gif|svg|eot|ttf|woff|woff2)$/i,`).
 
-Make sure you have the `cargo`, `rustc`, and (optionally) `emsdk` binaries somewhere in your `PATH`.
+Make sure you have the `cargo`, `rustc`, and (optionally) `emsdk` binaries somewhere in your `PATH`.  `stdweb` and other Rust libraries require a nightly build, which can be installed from https://rustup.rs/ .
 Require and initialize the wasm module:
 
 ```js

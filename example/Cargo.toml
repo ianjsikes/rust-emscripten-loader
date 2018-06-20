@@ -1,7 +1,10 @@
 [package]
 authors = ["Ian J Sikes <ianjsikes@gmail.com>"]
-name = "rust-wasm-loader-example"
-version = "0.1.0"
+name = "rustexample"
+version = "0.2.0"
+
+[lib]
+crate-type = ["cdylib"]
 
 [dependencies]
-webplatform = "0.4.2"
+"stdweb" = "0.4.6"

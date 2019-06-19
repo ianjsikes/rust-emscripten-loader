@@ -69,7 +69,7 @@ The following options can be added to the Webpack loader query:
 | ---- | ----------- | -------- | ------- |
 | `release` | Whether or not to pass the `--release` flag to cargo | false | false |
 | `path` | Path to your webpack output folder relative to project root | true | '' |
-| `target` | Allows one to specify `wasm32-unknown-emscripten` as build target | false | 'wasm32-unknown-unknown' |
+| `rustTarget` | Allows one to specify `wasm32-unknown-emscripten` as build target | false | 'wasm32-unknown-unknown' |
 
 ### Example
 

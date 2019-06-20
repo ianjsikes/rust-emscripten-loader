@@ -90,7 +90,9 @@ module.exports = function(source) {
       // does not support custom file path
       // Ref: https://github.com/koute/cargo-web/issues/131
       const runtime = `
-        const module = eval(\`${es5out.code}\`);
+        ${es5out.code}
+
+        const module = exports.default;
         const { imports } = module();
         const wasmPath = '${wasmPath}';
 

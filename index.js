@@ -43,7 +43,7 @@ module.exports = function(source) {
   const outFile = path.join(outDir, `${packageName}.js`);
 
   const subcmd = `cargo ${builtin ? 'web ' : ''}build`;
-  const cmd = `${subcmd} --target=${rustTarget}${release ? ' --release' : ''} --verbose`
+  const cmd = `${subcmd} --target=${rustTarget}${release ? ' --release' : ''} ${builtin ? '--runtime library-es6' : ''} --verbose`
 
   const self = this
   child_process.exec(cmd, { cwd: this.context }, function(
@@ -77,22 +77,39 @@ module.exports = function(source) {
       fs.readFileSync(wasmFile)
     )
 
-    if (builtin) {
+    const wasmPath = path.join(buildPath, `${packageName}.wasm`)
 
+    if (builtin) {
       // `cargo web build` emits es6 which
       // causes problems with `webpack -p`
       const es5out = babel.transform(out, {
         'presets': ['env']
       });
 
-      return callback(null, es5out.code);
+      // use custom runtime because cargo-web standalone runtime currently
+      // does not support custom file path
+      // Ref: https://github.com/koute/cargo-web/issues/131
+      const runtime = `
+        ${es5out.code}
 
+        const module = exports.default;
+        const { imports } = module();
+        const wasmPath = '${wasmPath}';
+
+        exports.default = () => new Promise((resolve, reject) => {
+            WebAssembly.instantiateStreaming(fetch(wasmPath), imports).then((obj) => {
+                resolve(obj.instance.exports);
+            }, reject);
+        });
+      `;
+
+      return callback(null, runtime);
     }
 
     // This object is passed to the Emscripten 'glue' code
     const Module = {
       // Path in the built project to the wasm file
-      wasmBinaryFile: path.join(buildPath, `${packageName}.wasm`),
+      wasmBinaryFile: wasmPath,
       // Indicates that we are NOT running in node, despite 'require' being defined
       ENVIRONMENT: 'WEB',
     }
